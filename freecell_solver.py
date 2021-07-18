@@ -9,7 +9,7 @@ import json
 pytesseract.pytesseract.tesseract_cmd = r'C:/Program Files/Tesseract-OCR/tesseract.exe'
 
 # dumped game
-GAME_DUMP_FILE = '{"field": [[{"value": 3, "suit": "s"}, {"value": 7, "suit": "h"}, {"value": 9, "suit": "h"}, {"value": 3, "suit": "d"}, {"value": 13, "suit": "d"}, {"value": 2, "suit": "d"}, {"value": 4, "suit": "s"}], [{"value": 2, "suit": "s"}, {"value": 12, "suit": "s"}, {"value": 12, "suit": "h"}, {"value": 8, "suit": "h"}, {"value": 12, "suit": "c"}, {"value": 13, "suit": "c"}, {"value": 4, "suit": "c"}], [{"value": 7, "suit": "s"}, {"value": 10, "suit": "s"}, {"value": 8, "suit": "c"}, {"value": 9, "suit": "c"}, {"value": 4, "suit": "h"}, {"value": 13, "suit": "h"}, {"value": 11, "suit": "c"}], [{"value": 10, "suit": "s"}, {"value": 8, "suit": "s"}, {"value": 1, "suit": "c"}, {"value": 4, "suit": "d"}, {"value": 5, "suit": "s"}, {"value": 11, "suit": "h"}, {"value": 1, "suit": "s"}], [{"value": 6, "suit": "d"}, {"value": 6, "suit": "h"}, {"value": 10, "suit": "h"}, {"value": 11, "suit": "c"}, {"value": 5, "suit": "d"}, {"value": 8, "suit": "d"}], [{"value": 9, "suit": "c"}, {"value": 6, "suit": "s"}, {"value": 5, "suit": "c"}, {"value": 1, "suit": "h"}, {"value": 12, "suit": "d"}, {"value": 13, "suit": "s"}], [{"value": 2, "suit": "c"}, {"value": 2, "suit": "h"}, {"value": 9, "suit": "d"}, {"value": 5, "suit": "h"}, {"value": 11, "suit": "d"}, {"value": 3, "suit": "h"}], [{"value": 1, "suit": "d"}, {"value": 3, "suit": "c"}, {"value": 10, "suit": "d"}, {"value": 7, "suit": "d"}, {"value": 6, "suit": "s"}, {"value": 7, "suit": "c"}]], "buffer": [], "goal": {"spades": [], "clubs": [], "diamonds": [], "hearts": []}}'
+GAME_DUMP_FILE = '{"field": [[{"value": 3, "suit": "s", "string": "3s"}, {"value": 7, "suit": "h", "string": "7h"}, {"value": 9, "suit": "h", "string": "9h"}, {"value": 3, "suit": "d", "string": "3d"}, {"value": 13, "suit": "d", "string": "Kd"}, {"value": 2, "suit": "d", "string": "2d"}, {"value": 4, "suit": "s", "string": "4s"}], [{"value": 2, "suit": "s", "string": "2s"}, {"value": 12, "suit": "s", "string": "Qs"}, {"value": 12, "suit": "h", "string": "Qh"}, {"value": 8, "suit": "h", "string": "8h"}, {"value": 12, "suit": "c", "string": "Qc"}, {"value": 13, "suit": "c", "string": "Kc"}, {"value": 4, "suit": "c", "string": "4c"}], [{"value": 7, "suit": "s", "string": "7s"}, {"value": 10, "suit": "s", "string": "10s"}, {"value": 8, "suit": "c", "string": "8c"}, {"value": 9, "suit": "c", "string": "9c"}, {"value": 4, "suit": "h", "string": "4h"}, {"value": 13, "suit": "h", "string": "Kh"}, {"value": 11, "suit": "c", "string": "Jc"}], [{"value": 10, "suit": "s", "string": "10s"}, {"value": 8, "suit": "s", "string": "8s"}, {"value": 1, "suit": "c", "string": "Ac"}, {"value": 4, "suit": "d", "string": "4d"}, {"value": 5, "suit": "s", "string": "5s"}, {"value": 11, "suit": "h", "string": "Jh"}, {"value": 1, "suit": "s", "string": "As"}], [{"value": 6, "suit": "d", "string": "6d"}, {"value": 6, "suit": "h", "string": "6h"}, {"value": 10, "suit": "h", "string": "10h"}, {"value": 11, "suit": "c", "string": "Jc"}, {"value": 5, "suit": "d", "string": "5d"}, {"value": 8, "suit": "d", "string": "8d"}], [{"value": 9, "suit": "c", "string": "9c"}, {"value": 6, "suit": "s", "string": "6s"}, {"value": 5, "suit": "c", "string": "5c"}, {"value": 1, "suit": "h", "string": "Ah"}, {"value": 12, "suit": "d", "string": "Qd"}, {"value": 13, "suit": "s", "string": "Ks"}], [{"value": 2, "suit": "c", "string": "2c"}, {"value": 2, "suit": "h", "string": "2h"}, {"value": 9, "suit": "d", "string": "9d"}, {"value": 5, "suit": "h", "string": "5h"}, {"value": 11, "suit": "d", "string": "Jd"}, {"value": 3, "suit": "h", "string": "3h"}], [{"value": 1, "suit": "d", "string": "Ad"}, {"value": 3, "suit": "c", "string": "3c"}, {"value": 10, "suit": "d", "string": "10d"}, {"value": 7, "suit": "d", "string": "7d"}, {"value": 6, "suit": "s", "string": "6s"}, {"value": 7, "suit": "c", "string": "7c"}]], "buffer": [], "goal": {"spades": 0, "clubs": 0, "diamonds": 0, "hearts": 0}}'
 
 # card string to text values list
 RESTRICTED_VALUES_LIST = ['2','3','4','5','6','7','8','9','1','J','Q','K','A']
@@ -19,9 +19,12 @@ SYM_Y = 15
 SYM_X_STEP = 110
 SYM_Y_STEP = 30
 
+GAME_COLUMNS_COUNT = 8
+
 # game stacks
 CARD_VALUE_KEY = 'value'
 CARD_SUIT_KEY = 'suit'
+CARD_STRING_KEY = 'string'
 CARD_BUFFER_KEY = 'buffer'
 GOAL_KEY = 'goal'
 FIELD_KEY = 'field'
@@ -33,12 +36,12 @@ game = {}
 game[FIELD_KEY] = []
 # 4 cards buffer
 game[CARD_BUFFER_KEY] = []
-# goal of the game
+# goal of the game, 0 - none, 1 - A, .. 13 - K
 game[GOAL_KEY] = {}
-game[GOAL_KEY]['spades'] = []
-game[GOAL_KEY]['clubs'] = []
-game[GOAL_KEY]['diamonds'] = []
-game[GOAL_KEY]['hearts'] = []
+game[GOAL_KEY]['spades'] = 0
+game[GOAL_KEY]['clubs'] = 0
+game[GOAL_KEY]['diamonds'] = 0
+game[GOAL_KEY]['hearts'] = 0
 
 def show():
 	#cv2.imshow('image', image)
@@ -56,7 +59,7 @@ def load_image():
 
 	global game
 
-	# load dumped game
+	# <<<<<<<<<<<<<<<<<<<<< load dumped game
 	game = json.loads(GAME_DUMP_FILE)
 	print('game loaded')
 	return
@@ -152,6 +155,7 @@ def load_image():
 				# translate string to numeric values
 				numeric_value = 0
 				if value == '1':
+					value = '10'
 					numeric_value = 10
 				elif value == 'J':
 					numeric_value = 11
@@ -165,7 +169,7 @@ def load_image():
 					numeric_value = int(value)
 
 				# fill game lists
-				game[FIELD_KEY][x].append({CARD_VALUE_KEY:numeric_value, CARD_SUIT_KEY:suit})
+				game[FIELD_KEY][x].append({CARD_VALUE_KEY:numeric_value, CARD_SUIT_KEY:suit, CARD_STRING_KEY:'{}{}'.format(value, suit) })
 			else:
 				print('failed to recongnize card values {} {}')
 				break
@@ -193,22 +197,75 @@ def load_image():
 	# unique card check?
 
 	# dump oaded game
-	#file = open('./game.dump', 'w')
-	#file.write(json.dumps(game))
+	file = open('./game.dump', 'w')
+	file.write(json.dumps(game))
+	print('game dumped')
 
 	print('game loaded')
 
+
+def print_current_field():
+
+	global game
+
+	# buffer state
+	buffer_string = ''
+
+	for i in range(0,4):
+		if len(buffer_string): buffer_string += '\t'
+		if len(game[CARD_BUFFER_KEY]) > i:
+			buffer_string += game[CARD_BUFFER_KEY][i]
+		else:
+			buffer_string += '__'
+
+	# result state
+	result_string = '\t{}\t{}\t{}\t{}'.format(game[GOAL_KEY]['hearts'], game[GOAL_KEY]['clubs'], game[GOAL_KEY]['diamonds'], game[GOAL_KEY]['spades'])
+
+	print('\t\t\t    |\t\t\t\t')
+	#print('1\t2\t3\t4   |\t5\t6\t7\t8')
+	print('{}  |{}'.format(buffer_string, result_string))
+	print('\t\t\t    |\t\t\t\t\n')
+
+	# print field
+	row = 0
+	while True:
+
+		display_flag = False
+
+		row_string = ''
+
+		for col in range(0, GAME_COLUMNS_COUNT):
+
+			if len(game[FIELD_KEY][col]) > row:
+				row_string += '{}\t'.format( game[FIELD_KEY][col][row][CARD_STRING_KEY] )
+
+		if len(row_string) == 0: break
+
+		print( row_string )
+		row += 1
 
 def solve_game():
 
 	global game
 
-	print( 'solve' )
-	print( game[FIELD_KEY][0][3][CARD_VALUE_KEY], game[FIELD_KEY][0][3][CARD_SUIT_KEY] )
+	#print( 'solve' )
+	#print( game[FIELD_KEY][0][3][CARD_VALUE_KEY], game[FIELD_KEY][0][3][CARD_SUIT_KEY] )
+
+	# main solving loop
+	while True:
+
+		row_string = ''
+
+		for col in range(0, GAME_COLUMNS_COUNT):
+			row_string += '{}\t'.format( game[FIELD_KEY][col][-1][CARD_STRING_KEY] )
+
+
+		break
 
 
 load_image()
-solve_game()
+#solve_game()
+print_current_field()
 
 #show()
 print('ok')
