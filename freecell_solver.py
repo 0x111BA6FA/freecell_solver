@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pytesseract
 import statistics
+from collections import defaultdict
 
 pytesseract.pytesseract.tesseract_cmd = r'C:/Program Files/Tesseract-OCR/tesseract.exe'
 
@@ -38,36 +39,20 @@ def show():
 	cv2.waitKey(0)
 	cv2.destroyAllWindows()
 
-def my_thresh():
-	for row in range(1, len(image)):
-		for col in range(1, len(image[row])):
-			blue = int(image[row][col][0])
-			green = int(image[row][col][1])
-			red = int(image[row][col][2])
-			if blue < 220 or green < 220 or red < 220:
-				image[row][col][0] = 0
-				image[row][col][1] = 0
-				image[row][col][2] = 0
-				'''
-				if blue + green + red < 350:
-					image[row][col][0] = 0
-					image[row][col][1] = 0
-					image[row][col][2] = 0
-				'''
-
 
 #ret, bin = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY)
 
 # load testing screenshot
 image = cv2.imread('f:/work/freecell_solver/freecell.png')
-#gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 SYM_X = 16
 SYM_Y = 15
 SYM_X_STEP = 110
 SYM_Y_STEP = 30
 
-cards_readed = 0
+total_cards_readed = 0
+total_red_suits = 0
+cards_dict = defaultdict(lambda:0)
 
 for x in range(0, 8):
 	for y in range(0, 7):
@@ -90,20 +75,34 @@ for x in range(0, 8):
 			continue
 
 		nominal = pytesseract.image_to_string(roi, config='--psm 10 --oem 3 -c tessedit_char_whitelist=0123456789AKQJ')[0].upper()
-		print( nominal, x, y, roi_x, roi_y, check_bit, check_bit_x, check_bit_y )
+
+		suit_bit_x = roi_x+6
+		suit_bit_y = roi_y+SYM_Y+4
+		suit_bit = image[suit_bit_y, suit_bit_x]
+		suit = 'b'
+		if suit_bit[2] > 200:
+			suit = 'r'
+			total_red_suits += 1
+
+		#print( nominal, suit, x, y, roi_x, roi_y, check_bit, check_bit_x, check_bit_y )
+		print( nominal, suit, x, y, suit_bit, suit_bit_x, suit_bit_y )
 		if nominal not in CARD_NOMINALS_LIST:
 			print('failed to recongnize card nominal {} {}')
 			break
 		else:
-			cards_readed += 1
+			total_cards_readed += 1
+			cards_dict[nominal] += 1
+
 	else:
 		continue
 	break
 
-if cards_readed != 52:
-	print('readed wrong cards count {}'.format(cards_readed))
-else:
-	print('readed ok')
+if total_cards_readed != 52 or total_red_suits != 26:
+	print('readed wrong cards count {}, red_suits {}'.format(total_cards_readed, total_red_suits))
+
+for k,v in cards_dict.items():
+	if v != 4:
+		print('check readed nominals failed {}, {}'.format(k,v))
 
 #print(gray)
 
