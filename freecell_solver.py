@@ -4,11 +4,41 @@ import matplotlib.pyplot as plt
 import pytesseract
 import statistics
 from collections import defaultdict
+import json
 
 pytesseract.pytesseract.tesseract_cmd = r'C:/Program Files/Tesseract-OCR/tesseract.exe'
 
+# dumped game
+GAME_DUMP_FILE = '{"field": [[{"value": 3, "suit": "s"}, {"value": 7, "suit": "h"}, {"value": 9, "suit": "h"}, {"value": 3, "suit": "d"}, {"value": 13, "suit": "d"}, {"value": 2, "suit": "d"}, {"value": 4, "suit": "s"}], [{"value": 2, "suit": "s"}, {"value": 12, "suit": "s"}, {"value": 12, "suit": "h"}, {"value": 8, "suit": "h"}, {"value": 12, "suit": "c"}, {"value": 13, "suit": "c"}, {"value": 4, "suit": "c"}], [{"value": 7, "suit": "s"}, {"value": 10, "suit": "s"}, {"value": 8, "suit": "c"}, {"value": 9, "suit": "c"}, {"value": 4, "suit": "h"}, {"value": 13, "suit": "h"}, {"value": 11, "suit": "c"}], [{"value": 10, "suit": "s"}, {"value": 8, "suit": "s"}, {"value": 1, "suit": "c"}, {"value": 4, "suit": "d"}, {"value": 5, "suit": "s"}, {"value": 11, "suit": "h"}, {"value": 1, "suit": "s"}], [{"value": 6, "suit": "d"}, {"value": 6, "suit": "h"}, {"value": 10, "suit": "h"}, {"value": 11, "suit": "c"}, {"value": 5, "suit": "d"}, {"value": 8, "suit": "d"}], [{"value": 9, "suit": "c"}, {"value": 6, "suit": "s"}, {"value": 5, "suit": "c"}, {"value": 1, "suit": "h"}, {"value": 12, "suit": "d"}, {"value": 13, "suit": "s"}], [{"value": 2, "suit": "c"}, {"value": 2, "suit": "h"}, {"value": 9, "suit": "d"}, {"value": 5, "suit": "h"}, {"value": 11, "suit": "d"}, {"value": 3, "suit": "h"}], [{"value": 1, "suit": "d"}, {"value": 3, "suit": "c"}, {"value": 10, "suit": "d"}, {"value": 7, "suit": "d"}, {"value": 6, "suit": "s"}, {"value": 7, "suit": "c"}]], "buffer": [], "goal": {"spades": [], "clubs": [], "diamonds": [], "hearts": []}}'
+
 # card string to text values list
 RESTRICTED_VALUES_LIST = ['2','3','4','5','6','7','8','9','1','J','Q','K','A']
+
+SYM_X = 16
+SYM_Y = 15
+SYM_X_STEP = 110
+SYM_Y_STEP = 30
+
+# game stacks
+CARD_VALUE_KEY = 'value'
+CARD_SUIT_KEY = 'suit'
+CARD_BUFFER_KEY = 'buffer'
+GOAL_KEY = 'goal'
+FIELD_KEY = 'field'
+
+
+# game structure
+game = {}
+# game field
+game[FIELD_KEY] = []
+# 4 cards buffer
+game[CARD_BUFFER_KEY] = []
+# goal of the game
+game[GOAL_KEY] = {}
+game[GOAL_KEY]['spades'] = []
+game[GOAL_KEY]['clubs'] = []
+game[GOAL_KEY]['diamonds'] = []
+game[GOAL_KEY]['hearts'] = []
 
 def show():
 	#cv2.imshow('image', image)
@@ -22,147 +52,163 @@ def show():
 	cv2.destroyAllWindows()
 
 
-#ret, bin = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY)
+def load_image():
 
-# load testing screenshot
-image = cv2.imread('f:/work/freecell_solver/freecell.png')
+	global game
 
-SYM_X = 16
-SYM_Y = 15
-SYM_X_STEP = 110
-SYM_Y_STEP = 30
-
-total_cards_readed = 0
-cards_dict = defaultdict(lambda:0)
-cards_suits_dict = defaultdict(lambda:0)
-readed_cards_list = []
-
-# game stacks
-CARD_VALUE_KEY = 'value'
-CARD_SUIT_KEY = 'suit'
-CARD_BUFFER_KEY = 'buffer'
-GOAL_KEY = 'goal'
-
-game = {}
-# 4 cards buffer
-game[CARD_BUFFER_KEY] = []
-# goal of the game
-game[GOAL_KEY] = {}
-game[GOAL_KEY]['spades'] = []
-game[GOAL_KEY]['clubs'] = []
-game[GOAL_KEY]['diamonds'] = []
-game[GOAL_KEY]['hearts'] = []
+	# load dumped game
+	game = json.loads(GAME_DUMP_FILE)
+	print('game loaded')
+	return
 
 
-for x in range(0, 8):
+    #ret, bin = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY)
 
-	# game column
-	game[x] = []
+	# load testing screenshot
+	image = cv2.imread('f:/work/freecell_solver/freecell.png')
 
-	for y in range(0, 7):
-		roi_x = 989 + x*SYM_X_STEP
-		roi_y = 617 + y*SYM_Y_STEP
+	total_cards_readed = 0
+	cards_dict = defaultdict(lambda:0)
+	cards_suits_dict = defaultdict(lambda:0)
+	readed_cards_list = []
 
-		if y >= 4:
-			roi_y += 1
+	for x in range(0, 8):
 
-		roi = image[roi_y:roi_y+SYM_Y,roi_x:roi_x+SYM_X]
+		# append game column stack
+		game[FIELD_KEY].append([])
 
-		# detect suit
-		roi_suit_x = roi_x + 2
-		roi_suit_y = roi_y + SYM_Y - 1
-		roi_suit = image[roi_suit_y:roi_suit_y+10,roi_suit_x:roi_suit_x+SYM_X-6]
+		for y in range(0, 7):
 
-		bgr = [0, 0, 0]
-		pixels_counted = 0
+			roi_x = 989 + x*SYM_X_STEP
+			roi_y = 617 + y*SYM_Y_STEP
 
-		for k in range(0, len(roi_suit)):
-			for j in range(0, len(roi_suit[0])):
+			if y >= 4:
+				roi_y += 1
 
-				m = np.mean(roi_suit[k][j])
+			roi = image[roi_y:roi_y+SYM_Y,roi_x:roi_x+SYM_X]
 
-				if m < 230:
-					bgr[0] += roi_suit[k][j][0]
-					bgr[1] += roi_suit[k][j][1]
-					bgr[2] += roi_suit[k][j][2]
-					pixels_counted += 1
+			# detect suit
+			roi_suit_x = roi_x + 2
+			roi_suit_y = roi_y + SYM_Y - 1
+			roi_suit = image[roi_suit_y:roi_suit_y+10,roi_suit_x:roi_suit_x+SYM_X-6]
 
-		# there is no card on that position, go to next card
-		if pixels_counted == 0:
-			#print('no card detected, skip')
-			continue
+			bgr = [0, 0, 0]
+			pixels_counted = 0
 
-		#pixels_count = len(roi_suit) * len(roi_suit[0])
-		bgr[0] /= pixels_counted
-		bgr[1] /= pixels_counted
-		bgr[2] /= pixels_counted
-		m = np.mean(bgr)
+			for k in range(0, len(roi_suit)):
+				for j in range(0, len(roi_suit[0])):
 
-		if bgr[2] > 243:
-			suit = 'h'
-		elif bgr[2] > 210:
-			suit = 'd'
-		elif m < 80.0:
-			suit = 's'
-		else:
-			suit = 'c'
+					m = np.mean(roi_suit[k][j])
 
+					if m < 230:
+						bgr[0] += roi_suit[k][j][0]
+						bgr[1] += roi_suit[k][j][1]
+						bgr[2] += roi_suit[k][j][2]
+						pixels_counted += 1
 
-		value = pytesseract.image_to_string(roi, config='--psm 10 --oem 3 -c tessedit_char_whitelist=0123456789AKQJ')[0].upper()
+			# pixels on suit area are white - there is no card - go to next
+			if pixels_counted < 10:
+				#print('no card detected, skip')
+				continue
 
-		#print( values, suit, x, y, roi_x, roi_y, check_bit, check_bit_x, check_bit_y )
-		#print( values, suit, x, y, suit_bit, suit_bit_x, suit_bit_y )
-		print( value, suit, x, y, bgr, m )
+			bgr[0] /= pixels_counted
+			bgr[1] /= pixels_counted
+			bgr[2] /= pixels_counted
+			m = np.mean(bgr)
 
-		#if x == 3 and y == 5:
-		#	break
-
-		if value in RESTRICTED_VALUES_LIST:
-
-			#if {'value':value, 'suit':suit} in readed_cards_list:
-				#print('<<<<<<<<<<<<<<<<<<<<<<<')
-
-			total_cards_readed += 1
-			cards_dict[value] += 1
-			cards_suits_dict[suit] += 1
-			readed_cards_list += {'value':value, 'suit':suit}
-
-			# translate string to numeric values
-			numeric_value = 0
-			if value == '1':
-				numeric_value = 10
-			elif value == 'J':
-				numeric_value = 11
-			elif value == 'Q':
-				numeric_value = 12
-			elif value == 'K':
-				numeric_value = 13
-			elif value == 'A':
-				numeric_value = 1
+			# decide suit
+			# hearts are many red pixels
+			if bgr[2] > 243:
+				suit = 'h'
+			# diamonds are red, but lesser than  hearts
+			elif bgr[2] > 210:
+				suit = 'd'
+			# spades are more black than clubs
+			elif m < 80.0:
+				suit = 's'
 			else:
-				numeric_value = int(value)
+				suit = 'c'
 
-			# fill game lists
-			game[x].append({CARD_VALUE_KEY:numeric_value, CARD_SUIT_KEY:suit})
+			# translate value of card to text
+			value = pytesseract.image_to_string(roi, config='--psm 10 --oem 3 -c tessedit_char_whitelist=0123456789AKQJ')[0].upper()
+
+			#print( values, suit, x, y, roi_x, roi_y, check_bit, check_bit_x, check_bit_y )
+			#print( values, suit, x, y, suit_bit, suit_bit_x, suit_bit_y )
+			#print( value, suit, x, y, bgr, m )
+
+			#if x == 3 and y == 5:
+			#	break
+
+			if value in RESTRICTED_VALUES_LIST:
+
+				#if {'value':value, 'suit':suit} in readed_cards_list:
+					#print('<<<<<<<<<<<<<<<<<<<<<<<')
+
+				total_cards_readed += 1
+				cards_dict[value] += 1
+				cards_suits_dict[suit] += 1
+				readed_cards_list += {'value':value, 'suit':suit}
+
+				# translate string to numeric values
+				numeric_value = 0
+				if value == '1':
+					numeric_value = 10
+				elif value == 'J':
+					numeric_value = 11
+				elif value == 'Q':
+					numeric_value = 12
+				elif value == 'K':
+					numeric_value = 13
+				elif value == 'A':
+					numeric_value = 1
+				else:
+					numeric_value = int(value)
+
+				# fill game lists
+				game[FIELD_KEY][x].append({CARD_VALUE_KEY:numeric_value, CARD_SUIT_KEY:suit})
+			else:
+				print('failed to recongnize card values {} {}')
+				break
+
 		else:
-			print('failed to recongnize card values {} {}')
-			break
+			continue
+		break
 
-	else:
-		continue
-	break
+	# result cheks
 
-if total_cards_readed != 52:
-	print('readed wrong cards count {}, red_suits {}'.format(total_cards_readed))
+	# loaded exactly 52 cards
+	if total_cards_readed != 52:
+		print('readed wrong cards count {}, red_suits {}'.format(total_cards_readed))
 
-for k,v in cards_dict.items():
-	if v != 4:
-		print('check readed values failed {}, {}'.format(k,v))
+	# every card loaded 4 times
+	for k,v in cards_dict.items():
+		if v != 4:
+			print('check readed values failed {}, {}'.format(k,v))
 
-for k,v in cards_suits_dict.items():
-	if v != 13:
-		print('check readed suits failed {}, {}'.format(k,v))
+	# every suit has 4 cards
+	for k,v in cards_suits_dict.items():
+		if v != 13:
+			print('check readed suits failed {}, {}'.format(k,v))
+
+	# unique card check?
+
+	# dump oaded game
+	#file = open('./game.dump', 'w')
+	#file.write(json.dumps(game))
+
+	print('game loaded')
 
 
-show()
+def solve_game():
+
+	global game
+
+	print( 'solve' )
+	print( game[FIELD_KEY][0][3][CARD_VALUE_KEY], game[FIELD_KEY][0][3][CARD_SUIT_KEY] )
+
+
+load_image()
+solve_game()
+
+#show()
 print('ok')
