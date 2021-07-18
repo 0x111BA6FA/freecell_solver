@@ -2,11 +2,12 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import pytesseract
+import statistics
 
 pytesseract.pytesseract.tesseract_cmd = r'C:/Program Files/Tesseract-OCR/tesseract.exe'
 
-# card nominals list
-CARD_NOMINALS_LIST = ['2','3','4','5','6','7','8','10','J','Q','K','A']
+# card string to text nominals list
+CARD_NOMINALS_LIST = ['2','3','4','5','6','7','8','9','1','J','Q','K','A']
 
 def show():
 	#cv2.imshow('bin', bin)
@@ -22,9 +23,17 @@ def show():
 	#plt.imshow(cv2.cvtColor(bin, cv2.COLOR_BGR2RGB))
 	#plt.show()
 
-	plt.figure(3)
-	plt.imshow(cv2.cvtColor(gray, cv2.COLOR_BGR2RGB))
-	plt.show()
+	#plt.figure(3)
+	#plt.imshow(cv2.cvtColor(gray, cv2.COLOR_BGR2RGB))
+	#plt.show()
+
+	#plt.figure(4)
+	#plt.imshow(cv2.cvtColor(roi, cv2.COLOR_BGR2RGB))
+	#plt.show()
+
+	#plt.figure(5)
+	#plt.imshow(cv2.cvtColor(bin, cv2.COLOR_BGR2RGB))
+	#plt.show()
 
 	cv2.waitKey(0)
 	cv2.destroyAllWindows()
@@ -46,34 +55,61 @@ def my_thresh():
 					image[row][col][2] = 0
 				'''
 
+
+#ret, bin = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY)
+
 # load testing screenshot
 image = cv2.imread('f:/work/freecell_solver/freecell.png')
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-#roi_x = 1200
-#roi_y = 600
-#gray = gray[roi_y:roi_y+100,roi_x:roi_x+200]
+#gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 SYM_X = 16
-SYM_Y = 13
+SYM_Y = 15
+SYM_X_STEP = 110
+SYM_Y_STEP = 30
 
-# 1 1
-roi_x = 992
-roi_y = 617
+cards_readed = 0
 
-# 1 4
-#roi_x = 1319
-#roi_y = 617
+for x in range(0, 8):
+	for y in range(0, 7):
+		roi_x = 989 + x*SYM_X_STEP
+		roi_y = 617 + y*SYM_Y_STEP
 
-gray = gray[roi_y:roi_y+SYM_Y,roi_x:roi_x+SYM_X]
+		if y >= 4:
+			roi_y += 1
+
+		roi = image[roi_y:roi_y+SYM_Y,roi_x:roi_x+SYM_X]
+		#gray = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
+		#ret, bin = cv2.threshold(gray, 240, 255, cv2.THRESH_BINARY)
+
+		# check if there is card, check if bit is green
+		check_bit_x = roi_x + SYM_X - 1
+		check_bit_y = roi_y + 80
+		check_bit = image[check_bit_y, check_bit_x]
+		if check_bit[1] > check_bit[0] and check_bit[1] > check_bit[2] and statistics.mean(check_bit) < 200:
+			print('no card detected, skipped', check_bit, check_bit_x, check_bit_y)
+			continue
+
+		nominal = pytesseract.image_to_string(roi, config='--psm 10 --oem 3 -c tessedit_char_whitelist=0123456789AKQJ')[0].upper()
+		print( nominal, x, y, roi_x, roi_y, check_bit, check_bit_x, check_bit_y )
+		if nominal not in CARD_NOMINALS_LIST:
+			print('failed to recongnize card nominal {} {}')
+			break
+		else:
+			cards_readed += 1
+	else:
+		continue
+	break
+
+if cards_readed != 52:
+	print('readed wrong cards count {}'.format(cards_readed))
+else:
+	print('readed ok')
 
 #print(gray)
-ret, bin = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY)
+
 #my_thresh()
 
-nominal = pytesseract.image_to_string(gray, config='--psm 10 --oem 3 tessedit_char_whitelist=0123456789AKQJ')
-if nominal not in CARD_NOMINALS_LIST:
-	print('failed to recongnize card nominal {} {}')
+
 
 #hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 #h,s,v = cv2.split(hsv)
