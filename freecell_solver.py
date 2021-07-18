@@ -11,16 +11,12 @@ pytesseract.pytesseract.tesseract_cmd = r'C:/Program Files/Tesseract-OCR/tessera
 RESTRICTED_VALUES_LIST = ['2','3','4','5','6','7','8','9','1','J','Q','K','A']
 
 def show():
-	#cv2.imshow('bin', bin)
-	#cv2.imshow('gray', gray)
 	#cv2.imshow('image', image)
-	#cv2.imshow('h', h)
-	#cv2.imshow('roi', roi)
 
-	plt.figure(1)
+	#plt.figure(1)
 	#plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-	plt.imshow(cv2.cvtColor(roi_suit, cv2.COLOR_BGR2RGB))
-	plt.show()
+	#plt.imshow(cv2.cvtColor(roi_suit, cv2.COLOR_BGR2RGB))
+	#plt.show()
 
 	cv2.waitKey(0)
 	cv2.destroyAllWindows()
@@ -71,18 +67,6 @@ for x in range(0, 8):
 			roi_y += 1
 
 		roi = image[roi_y:roi_y+SYM_Y,roi_x:roi_x+SYM_X]
-		#gray = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
-		#ret, bin = cv2.threshold(gray, 240, 255, cv2.THRESH_BINARY)
-
-		# check if there is card, check if bit is green
-		check_bit_x = roi_x + SYM_X - 1
-		check_bit_y = roi_y + 80
-		check_bit = image[check_bit_y, check_bit_x]
-		if check_bit[1] > check_bit[0] and check_bit[1] > check_bit[2] and statistics.mean(check_bit) < 200:
-			#print('no card detected, skipped', check_bit, check_bit_x, check_bit_y)
-			continue
-
-		value = pytesseract.image_to_string(roi, config='--psm 10 --oem 3 -c tessedit_char_whitelist=0123456789AKQJ')[0].upper()
 
 		# detect suit
 		roi_suit_x = roi_x + 2
@@ -103,6 +87,11 @@ for x in range(0, 8):
 					bgr[2] += roi_suit[k][j][2]
 					pixels_counted += 1
 
+		# there is no card on that position, go to next card
+		if pixels_counted == 0:
+			#print('no card detected, skip')
+			continue
+
 		#pixels_count = len(roi_suit) * len(roi_suit[0])
 		bgr[0] /= pixels_counted
 		bgr[1] /= pixels_counted
@@ -118,22 +107,8 @@ for x in range(0, 8):
 		else:
 			suit = 'c'
 
-		#print('bgr', bgr, np.mean(bgr), value, suit)
 
-		#print( len(roi_suit), len(roi_suit[0]), len(roi_suit[0][0]) )
-
-		'''
-		if y >= 4:
-			roi_suit_y += 1
-
-		suit_bit_x = roi_x + 6
-		suit_bit_y = roi_y + SYM_Y + 4
-		suit_bit = image[suit_bit_y, suit_bit_x]
-		suit = 'b'
-		if suit_bit[2] > 200:
-			suit = 'r'
-			total_red_suits += 1
-		'''
+		value = pytesseract.image_to_string(roi, config='--psm 10 --oem 3 -c tessedit_char_whitelist=0123456789AKQJ')[0].upper()
 
 		#print( values, suit, x, y, roi_x, roi_y, check_bit, check_bit_x, check_bit_y )
 		#print( values, suit, x, y, suit_bit, suit_bit_x, suit_bit_y )
