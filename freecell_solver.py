@@ -9,7 +9,7 @@ import json
 pytesseract.pytesseract.tesseract_cmd = r'C:/Program Files/Tesseract-OCR/tesseract.exe'
 
 # dumped game
-GAME_DUMP_FILE = '{"field": [[{"value": 3, "suit": "s", "string": "3s"}, {"value": 7, "suit": "h", "string": "7h"}, {"value": 9, "suit": "h", "string": "9h"}, {"value": 3, "suit": "d", "string": "3d"}, {"value": 13, "suit": "d", "string": "Kd"}, {"value": 2, "suit": "d", "string": "2d"}, {"value": 4, "suit": "s", "string": "4s"}], [{"value": 2, "suit": "s", "string": "2s"}, {"value": 12, "suit": "s", "string": "Qs"}, {"value": 12, "suit": "h", "string": "Qh"}, {"value": 8, "suit": "h", "string": "8h"}, {"value": 12, "suit": "c", "string": "Qc"}, {"value": 13, "suit": "c", "string": "Kc"}, {"value": 4, "suit": "c", "string": "4c"}], [{"value": 7, "suit": "s", "string": "7s"}, {"value": 10, "suit": "s", "string": "10s"}, {"value": 8, "suit": "c", "string": "8c"}, {"value": 9, "suit": "c", "string": "9c"}, {"value": 4, "suit": "h", "string": "4h"}, {"value": 13, "suit": "h", "string": "Kh"}, {"value": 11, "suit": "c", "string": "Jc"}], [{"value": 10, "suit": "s", "string": "10s"}, {"value": 8, "suit": "s", "string": "8s"}, {"value": 1, "suit": "c", "string": "Ac"}, {"value": 4, "suit": "d", "string": "4d"}, {"value": 5, "suit": "s", "string": "5s"}, {"value": 11, "suit": "h", "string": "Jh"}, {"value": 1, "suit": "s", "string": "As"}], [{"value": 6, "suit": "d", "string": "6d"}, {"value": 6, "suit": "h", "string": "6h"}, {"value": 10, "suit": "h", "string": "10h"}, {"value": 11, "suit": "c", "string": "Jc"}, {"value": 5, "suit": "d", "string": "5d"}, {"value": 8, "suit": "d", "string": "8d"}], [{"value": 9, "suit": "c", "string": "9c"}, {"value": 6, "suit": "s", "string": "6s"}, {"value": 5, "suit": "c", "string": "5c"}, {"value": 1, "suit": "h", "string": "Ah"}, {"value": 12, "suit": "d", "string": "Qd"}, {"value": 13, "suit": "s", "string": "Ks"}], [{"value": 2, "suit": "c", "string": "2c"}, {"value": 2, "suit": "h", "string": "2h"}, {"value": 9, "suit": "d", "string": "9d"}, {"value": 5, "suit": "h", "string": "5h"}, {"value": 11, "suit": "d", "string": "Jd"}, {"value": 3, "suit": "h", "string": "3h"}], [{"value": 1, "suit": "d", "string": "Ad"}, {"value": 3, "suit": "c", "string": "3c"}, {"value": 10, "suit": "d", "string": "10d"}, {"value": 7, "suit": "d", "string": "7d"}, {"value": 6, "suit": "s", "string": "6s"}, {"value": 7, "suit": "c", "string": "7c"}]], "buffer": [], "goal": {"spades": 0, "clubs": 0, "diamonds": 0, "hearts": 0}}'
+GAME_DUMP_FILE = '{"field": [[{"value": 3, "suit": "spades", "string": "3s"}, {"value": 7, "suit": "hearts", "string": "7h"}, {"value": 9, "suit": "hearts", "string": "9h"}, {"value": 3, "suit": "diamonds", "string": "3d"}, {"value": 13, "suit": "diamonds", "string": "Kd"}, {"value": 2, "suit": "diamonds", "string": "2d"}, {"value": 4, "suit": "spades", "string": "4s"}], [{"value": 2, "suit": "spades", "string": "2s"}, {"value": 12, "suit": "spades", "string": "Qs"}, {"value": 12, "suit": "hearts", "string": "Qh"}, {"value": 8, "suit": "hearts", "string": "8h"}, {"value": 12, "suit": "clubs", "string": "Qc"}, {"value": 13, "suit": "clubs", "string": "Kc"}, {"value": 4, "suit": "clubs", "string": "4c"}], [{"value": 7, "suit": "spades", "string": "7s"}, {"value": 10, "suit": "spades", "string": "10s"}, {"value": 8, "suit": "clubs", "string": "8c"}, {"value": 9, "suit": "clubs", "string": "9c"}, {"value": 4, "suit": "hearts", "string": "4h"}, {"value": 13, "suit": "hearts", "string": "Kh"}, {"value": 11, "suit": "clubs", "string": "Jc"}], [{"value": 10, "suit": "spades", "string": "10s"}, {"value": 8, "suit": "spades", "string": "8s"}, {"value": 1, "suit": "clubs", "string": "Ac"}, {"value": 4, "suit": "diamonds", "string": "4d"}, {"value": 5, "suit": "spades", "string": "5s"}, {"value": 11, "suit": "hearts", "string": "Jh"}, {"value": 1, "suit": "spades", "string": "As"}], [{"value": 6, "suit": "diamonds", "string": "6d"}, {"value": 6, "suit": "hearts", "string": "6h"}, {"value": 10, "suit": "hearts", "string": "10h"}, {"value": 11, "suit": "clubs", "string": "Jc"}, {"value": 5, "suit": "diamonds", "string": "5d"}, {"value": 8, "suit": "diamonds", "string": "8d"}], [{"value": 9, "suit": "clubs", "string": "9c"}, {"value": 6, "suit": "spades", "string": "6s"}, {"value": 5, "suit": "clubs", "string": "5c"}, {"value": 1, "suit": "hearts", "string": "Ah"}, {"value": 12, "suit": "diamonds", "string": "Qd"}, {"value": 13, "suit": "spades", "string": "Ks"}], [{"value": 2, "suit": "clubs", "string": "2c"}, {"value": 2, "suit": "hearts", "string": "2h"}, {"value": 9, "suit": "diamonds", "string": "9d"}, {"value": 5, "suit": "hearts", "string": "5h"}, {"value": 11, "suit": "diamonds", "string": "Jd"}, {"value": 3, "suit": "hearts", "string": "3h"}], [{"value": 1, "suit": "diamonds", "string": "Ad"}, {"value": 3, "suit": "clubs", "string": "3c"}, {"value": 10, "suit": "diamonds", "string": "10d"}, {"value": 7, "suit": "diamonds", "string": "7d"}, {"value": 6, "suit": "spades", "string": "6s"}, {"value": 7, "suit": "clubs", "string": "7c"}]], "buffer": [], "goal": {"spades": 0, "clubs": 0, "diamonds": 0, "hearts": 0}}'
 
 # card string to text values list
 RESTRICTED_VALUES_LIST = ['2','3','4','5','6','7','8','9','1','J','Q','K','A']
@@ -30,6 +30,24 @@ GOAL_KEY = 'goal'
 FIELD_KEY = 'field'
 
 
+CARD_SUIT_SPADES_STRING =	'spades'
+CARD_SUIT_CLUBS_STRING =	'clubs'
+CARD_SUIT_DIAMONDS_STRING = 'diamonds'
+CARD_SUIT_HEARTS_STRING =	'hearts'
+
+RED_SUITS = [CARD_SUIT_DIAMONDS_STRING, CARD_SUIT_HEARTS_STRING]
+BLACK_SUITS = [CARD_SUIT_CLUBS_STRING, CARD_SUIT_SPADES_STRING]
+
+def suit_is_black(suit):
+	if suit in BLACK_SUITS:
+		return True
+	return False
+
+def alter_suit(suit):
+	if suit_is_black(suit):
+		return RED_SUITS
+	return BLACK_SUITS
+
 # game structure
 game = {}
 # game field
@@ -38,10 +56,10 @@ game[FIELD_KEY] = []
 game[CARD_BUFFER_KEY] = []
 # goal of the game, 0 - none, 1 - A, .. 13 - K
 game[GOAL_KEY] = {}
-game[GOAL_KEY]['spades'] = 0
-game[GOAL_KEY]['clubs'] = 0
-game[GOAL_KEY]['diamonds'] = 0
-game[GOAL_KEY]['hearts'] = 0
+game[GOAL_KEY][CARD_SUIT_SPADES_STRING] = 0
+game[GOAL_KEY][CARD_SUIT_CLUBS_STRING] = 0
+game[GOAL_KEY][CARD_SUIT_DIAMONDS_STRING] = 0
+game[GOAL_KEY][CARD_SUIT_HEARTS_STRING] = 0
 
 def show():
 	#cv2.imshow('image', image)
@@ -121,16 +139,21 @@ def load_image():
 
 			# decide suit
 			# hearts are many red pixels
+			suit_string = ''
 			if bgr[2] > 243:
 				suit = 'h'
+				suit_string = CARD_SUIT_HEARTS_STRING
 			# diamonds are red, but lesser than  hearts
 			elif bgr[2] > 210:
 				suit = 'd'
+				suit_string = CARD_SUIT_DIAMONDS_STRING
 			# spades are more black than clubs
 			elif m < 80.0:
 				suit = 's'
+				suit_string = CARD_SUIT_SPADES_STRING
 			else:
 				suit = 'c'
+				suit_string = CARD_SUIT_CLUBS_STRING
 
 			# translate value of card to text
 			value = pytesseract.image_to_string(roi, config='--psm 10 --oem 3 -c tessedit_char_whitelist=0123456789AKQJ')[0].upper()
@@ -169,7 +192,7 @@ def load_image():
 					numeric_value = int(value)
 
 				# fill game lists
-				game[FIELD_KEY][x].append({CARD_VALUE_KEY:numeric_value, CARD_SUIT_KEY:suit, CARD_STRING_KEY:'{}{}'.format(value, suit) })
+				game[FIELD_KEY][x].append({CARD_VALUE_KEY:numeric_value, CARD_SUIT_KEY:suit_string, CARD_STRING_KEY:'{}{}'.format(value, suit) })
 			else:
 				print('failed to recongnize card values {} {}')
 				break
@@ -219,12 +242,15 @@ def print_current_field():
 			buffer_string += '__'
 
 	# result state
-	result_string = '\t{}\t{}\t{}\t{}'.format(game[GOAL_KEY]['hearts'], game[GOAL_KEY]['clubs'], game[GOAL_KEY]['diamonds'], game[GOAL_KEY]['spades'])
+	result_string = '\t{}h\t{}c\t{}d\t{}s'.format(game[GOAL_KEY][CARD_SUIT_HEARTS_STRING],
+	                                            game[GOAL_KEY][CARD_SUIT_CLUBS_STRING],
+												game[GOAL_KEY][CARD_SUIT_DIAMONDS_STRING],
+												game[GOAL_KEY][CARD_SUIT_SPADES_STRING])
 
-	print('\t\t\t    |\t\t\t\t')
-	#print('1\t2\t3\t4   |\t5\t6\t7\t8')
-	print('{}  |{}'.format(buffer_string, result_string))
-	print('\t\t\t    |\t\t\t\t\n')
+	print('\t\t\t\t    |\t\t\t\t')
+	#print('\t1\t2\t3\t4   |\t5\t6\t7\t8')
+	print('\t{}  |{}'.format(buffer_string, result_string))
+	print('\t\t\t\t    |\t\t\t\t\n')
 
 	# print field
 	row = 0
@@ -233,16 +259,45 @@ def print_current_field():
 		display_flag = False
 
 		row_string = ''
-
+		no_cards_to_print = True
 		for col in range(0, GAME_COLUMNS_COUNT):
 
 			if len(game[FIELD_KEY][col]) > row:
 				row_string += '{}\t'.format( game[FIELD_KEY][col][row][CARD_STRING_KEY] )
+				no_cards_to_print = False
+			else:
+				row_string += '\t'
 
-		if len(row_string) == 0: break
+		if no_cards_to_print: break
 
-		print( row_string )
+		print( '\t' + row_string )
 		row += 1
+
+
+
+
+def stack_depth(col):
+
+	global game
+
+	total_elems = len(game[FIELD_KEY][col])
+	depth = 1
+	for row in range(1, total_elems):
+
+		card = game[FIELD_KEY][col][total_elems-row]
+		#suit = card[CARD_SUIT_KEY]
+		#value = card[CARD_VALUE_KEY]
+
+		prev_card = game[FIELD_KEY][col][total_elems-row-1]
+
+		if card[CARD_VALUE_KEY]+1 == prev_card[CARD_VALUE_KEY] and prev_card[CARD_SUIT_KEY] in alter_suit(card[CARD_SUIT_KEY]):
+			depth += 1
+			continue
+
+		break
+
+	return depth
+
 
 def solve_game():
 
@@ -252,20 +307,115 @@ def solve_game():
 	#print( game[FIELD_KEY][0][3][CARD_VALUE_KEY], game[FIELD_KEY][0][3][CARD_SUIT_KEY] )
 
 	# main solving loop
+
+	# 1 - rescan to try autoresult after every move
+	# 2 - stage 1 finished, no moves
+	stage = 1
+
+	# stack of moves
+	action_stack = []
+
+	col_depth = []
+
+	# precalc col_depths, and then we will only update it
+	for col in range(0, GAME_COLUMNS_COUNT):
+		col_depth.append(stack_depth(col))
+
+
 	while True:
 
-		row_string = ''
 
+
+		print('================ stage {} ===================='.format(stage))
+
+		prev_action_stack_size = len(action_stack)
+		action_flag = False
 		for col in range(0, GAME_COLUMNS_COUNT):
-			row_string += '{}\t'.format( game[FIELD_KEY][col][-1][CARD_STRING_KEY] )
+
+			# scan over each column
+
+			card = game[FIELD_KEY][col][-1]
+			suit = card[CARD_SUIT_KEY]
+			value = card[CARD_VALUE_KEY]
+
+			# check current stack size
+			depth = col_depth[col]
 
 
-		break
+			if stage == 1:
+
+				# check if we can already result this card
+				if game[GOAL_KEY][suit]+1 == value:
+
+					ok_flag = True
+
+					# check another suits already in goal
+					for s in alter_suit(suit):
+						if game[GOAL_KEY][s] < value - 1:
+							ok_flag = False
+							print('col {} card {} skip move to goal'.format(col, card[CARD_STRING_KEY]))
+
+					if ok_flag:
+
+						# move card to result
+
+						game[GOAL_KEY][suit] += 1
+						game[FIELD_KEY][col].pop()
+						col_depth[col] = stack_depth(col)
+
+						print('col {} card {} moved to goal'.format(col, card[CARD_STRING_KEY]))
+						action_stack.append({'card':card,'from':col,'to':'goal'})
+						action_flag = True
+						break
+
+			elif stage == 2:
+
+				# check if we can move current card to another column
+				for col2 in range(0, GAME_COLUMNS_COUNT):
+					card2 = game[FIELD_KEY][col2][-1]
+					suit2 = card2[CARD_SUIT_KEY]
+					value2 = card2[CARD_VALUE_KEY]
+					depth2 = col_depth[col2]
+
+					if suit2 in alter_suit(suit) and value+1 == value2 and depth <= depth2:
+
+						game[FIELD_KEY][col2].append(card)
+						game[FIELD_KEY][col].pop()
+						col_depth[col] = stack_depth(col)
+						col_depth[col2] += 1
+
+						print('col {} card {} moved to col {} onto card {} depth2 {}'.format(col,
+						                                    card[CARD_STRING_KEY],
+															col2,
+															card2[CARD_STRING_KEY],
+															depth2+1))
+
+						action_stack.append({'card':card,'from':col,'to':col2})
+						action_flag = True
+						break
+
+			if action_flag:
+				break
+
+
+		if not ( len(action_stack) == prev_action_stack_size or len(action_stack) == prev_action_stack_size+1 ):
+			print('<<<<<<<<<<<<<<<<<<< CRITICAL ERROR ACTION STACK OPERATION before {} after {}'.format(prev_action_stack_size, len(action_stack)))
+			break
+
+		if action_flag:
+			# after every move we need to restart scan
+			stage = 1
+		else:
+			# else we are going to next stage
+			stage += 1
+
+
+		if stage == 3: break
 
 
 load_image()
-#solve_game()
+solve_game()
 print_current_field()
 
 #show()
-print('ok')
+#print('ok')
